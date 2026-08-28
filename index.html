@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SemanticSlider3D: Training-Free Continuous Semantic Editing for 3D Objects</title>
+
+<meta name="description" content="Continuous semantic attribute editing of 3D objects with no per-attribute training. UIST 2026.">
+<meta property="og:title" content="SemanticSlider3D: Training-Free Continuous Semantic Editing for 3D Objects">
+<meta property="og:description" content="Continuous semantic attribute editing of 3D objects with no per-attribute training. UIST 2026.">
+<meta property="og:type" content="website">
+<!-- TODO: set to your final URL, e.g. https://ruw001.github.io/semanticslider3d-page/ -->
+<meta property="og:url" content="">
+<!-- swap both to static/images/teaser.png once that figure exists -->
+<meta property="og:image" content="https://img.youtube.com/vi/ngadxEGPrfw/maxresdefault.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img.youtube.com/vi/ngadxEGPrfw/maxresdefault.jpg">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🎚️</text></svg>">
+<link rel="stylesheet" href="static/css/style.css?v=18">
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="venue">UIST 2026</p>
+    <h1>SemanticSlider3D</h1>
+    <p class="subtitle">Training-Free Continuous Semantic Editing for 3D Objects</p>
+
+    <ul class="authors">
+      <li><a href="#">Ru Wang</a><sup>1</sup><sup class="dagger">*</sup></li>
+      <li><a href="#">Rahul Jain</a><sup>2</sup></li>
+      <li><a href="#">Koichiro Niinuma</a><sup>3</sup></li>
+      <li><a href="#">Aakar Gupta</a><sup>3</sup></li>
+    </ul>
+    <p class="affil">
+      <sup>1</sup>University of Wisconsin&ndash;Madison &nbsp;&nbsp; 
+      <sup>2</sup>Purdue University &nbsp;&nbsp; 
+      <sup>3</sup>Fujitsu Research of America
+      <br><span class="note"><sup>*</sup>Work done during an internship at Fujitsu Research of America.</span>
+    </p>
+
+    <nav class="links" aria-label="Resource links">
+      <a class="btn" href="https://arxiv.org/pdf/2608.18560">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5" class="stroke"/></svg>Paper</a>
+      <a class="btn" href="https://arxiv.org/abs/2608.18560">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z" class="stroke"/><path d="M8 8h8M8 12h8M8 16h5" class="stroke"/></svg>arXiv</a>
+      <a class="btn" href="#video">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z" class="stroke"/><path d="M10 9l5 3-5 3z"/></svg>Video</a>
+      <a class="btn" href="https://github.com/ruw001/SemanticSlider3D">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0012 2z"/></svg>Code</a>
+      <span class="btn btn-soon" data-soon="Coming soon" aria-disabled="true">
+        <span class="emoji" aria-hidden="true">&#129303;</span>HF Demo<span class="sr-only"> &mdash; coming soon</span></span>
+      <span class="btn btn-soon" data-soon="Coming soon" aria-disabled="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7.5" ry="3" class="stroke"/><path d="M4.5 6v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6" class="stroke"/><path d="M4.5 12v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6" class="stroke"/></svg>Dataset<span class="sr-only"> &mdash; coming soon</span></span>
+      <a class="btn btn-primary" href="#playground">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18" class="stroke"/><circle cx="15" cy="12" r="3.5"/></svg>Interactive Demo</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= TEASER ================= -->
+<section class="teaser-band">
+  <div class="wrap">
+    <figure class="figure">
+      <a class="figlink" href="static/images/edit_process.pdf" title="Open the full-resolution vector figure (PDF)">
+        <img src="static/images/teaser.png" width="2417" height="943"
+             alt="Figure 1: Pipeline diagram for SemanticSlider3D with five labeled stages, using a dark brown upright piano and target attribute “very futuristic looking” as a running example. (a) Multi-View Rendering. The original dark brown upright piano is shown on the left. N camera views are rendered from uniformly distributed viewpoints and displayed in a 3-column grid, showing the piano from diverse angles including front-facing with visible keys, angled top-down views showing the lid, side profiles, and rear-facing views showing the flat back panel. Dotted lines indicate additional views not shown. (b) Generating Editing Prompt Pairs. GPT 5.2 generates two prompts shown in colored text boxes. The positive prompt in a blue box reads: “Make the piano ultra-sleek and futuristic, minimalist form, integrated LED accents.” The negative prompt in a yellow-orange box reads: “Make the piano classic and traditional, ornate wood finish, vintage design.” (c) Select Edit-Relevant Views. A vertical pink gradient bar labeled “Higher Relevance” indicates view ranking. Front-facing views showing the piano keys and body are ranked at the top, while less informative views such as rear-facing angles showing only the flat back panel are ranked lower. A bracket on the right identifies the M most relevant views selected for the next stage. (d) Generating Image Pairs. GPT Image 1.5 edits each selected view with both prompts. Two labeled columns show the results: the Positive column shows bright silvery futuristic piano versions with sleek angular forms; the Negative column shows dark brown traditional piano versions with ornate wooden appearance. Three visible pairs are shown with dotted lines indicating additional pairs below. (e) Editing via Generation. The TRELLIS pipeline combines multi-view conditions from stage (a) with the steering direction derived from the contrastive pairs in stage (d). Five 3D piano variations are shown at alpha values of −4.80, −1.25, 0, 2.13, and 5.00. At alpha −4.80 the piano is very dark brown with a heavy traditional appearance; at −1.25 it is a slightly lighter brown; at 0 it matches the original object; at 2.13 it has a lighter more modern form; at 5.00 it is a bright metallic blue with a sleek futuristic appearance."></a>
+      <figcaption>Given a 3D object and a user-specified attribute, SemanticSlider3D renders multi-view images,
+      generates contrastive editing prompt pairs, selects the most edit-relevant views, and converts the
+      resulting contrastive image pairs into a steering direction &mdash; producing a coherent spectrum of 3D
+      variations with no per-attribute training.
+      <a href="static/images/edit_process.pdf">Full-resolution PDF</a>.</figcaption>
+
+    </figure>
+  </div>
+</section>
+
+<!-- ================= ABSTRACT ================= -->
+<section id="abstract">
+  <div class="wrap narrow">
+    <h2>Abstract</h2>
+    <p>Fine-grained control over continuous semantic attributes of 3D objects is essential for 3D content
+    creation, but is not well supported by conventional 3D modeling workflows or prompt-based interaction with
+    existing generative AI tools. While slider-based methods have proven effective for fine-grained semantic
+    control in 2D image generation, no equivalent approach exists for 3D. Extending these 2D methods to 3D is
+    non-trivial due to challenges unique to 3D, including geometric integrity and cross-view coherence.</p>
+
+    <p>We present SemanticSlider3D, a technique for continuous semantic attribute editing of 3D objects that
+    requires no per-attribute training. Given a user-specified attribute, our pipeline constructs a semantic
+    editing direction in the latent space of a state-of-the-art 3D generation model, presenting a diverse and
+    coherent spectrum of 3D variations.</p>
+
+    <p>A technical validation on a dataset of 50 3D object-attribute pairs shows our method was preferred by all
+    five human assessors across variation range, consistency, 3D object quality, and attribute disentanglement,
+    over a baseline combining a 2D slider with an image-to-3D model. An exploratory study with six participants
+    demonstrates that SemanticSlider3D supported decision-making in 3D prototyping and was perceived as a
+    valuable addition to existing workflows.</p>
+  </div>
+</section>
+
+<!-- ================= INTERACTIVE DEMO ================= -->
+<section id="playground" class="alt">
+  <div class="wrap">
+    <h2>Try the sliders</h2>
+    <p class="lead">Each slider moves through nine variations produced by one semantic editing direction.
+    The rotation control turns every object at once, so you can check that an edit holds up across views.</p>
+
+    <div class="rotation-control">
+      <label for="rot">Rotate all</label>
+      <input id="rot" type="range" min="0" max="17" step="1" value="0" aria-label="Rotation of all objects">
+      <output for="rot" id="rot-out">0&deg;</output>
+    </div>
+
+    <!-- Panel name: object + attribute category. Slider ends: the two extremes.
+         alt / aria-label / readout key are derived from those - keep them in sync. -->
+    <div class="slider-grid">
+      <div class="slider-demo" data-demo="23_b">
+        <div class="slider-stage"><img src="static/images/sliders_demo/23_b/0/view_000.png" alt="An upright piano edited along a style attribute, from retro to futuristic; the slider sets the intensity and the rotation slider sets the viewing angle."></div>
+        <p class="panel-name">Piano <span>&middot; style</span></p>
+        <div class="slider-controls">
+          <span class="slider-end">retro</span>
+          <input type="range" min="0" max="8" step="1" value="0" aria-label="style, retro to futuristic, for Piano">
+          <span class="slider-end">futuristic</span>
+        </div>
+      </div>
+      <div class="slider-demo" data-demo="21_b">
+        <!-- steps 1-8 need +180 deg; see ORIENTATION_FIX in static/js/main.js -->
+        <div class="slider-stage"><img src="static/images/sliders_demo/21_b/0/view_000.png" alt="A yellow car edited along a style attribute, from boxy to sporty; the slider sets the intensity and the rotation slider sets the viewing angle."></div>
+        <p class="panel-name">Car <span>&middot; style</span></p>
+        <div class="slider-controls">
+          <span class="slider-end">boxy</span>
+          <input type="range" min="0" max="8" step="1" value="0" aria-label="style, boxy to sporty, for Car">
+          <span class="slider-end">sporty</span>
+        </div>
+      </div>
+      <div class="slider-demo" data-demo="31_b">
+        <div class="slider-stage"><img src="static/images/sliders_demo/31_b/0/view_000.png" alt="A book edited along a condition attribute, from brand new to well-worn; the slider sets the intensity and the rotation slider sets the viewing angle."></div>
+        <p class="panel-name">Book <span>&middot; condition</span></p>
+        <div class="slider-controls">
+          <span class="slider-end">brand new</span>
+          <input type="range" min="0" max="8" step="1" value="0" aria-label="condition, brand new to well-worn, for Book">
+          <span class="slider-end">well-worn</span>
+        </div>
+      </div>
+      <div class="slider-demo" data-demo="0_b">
+        <div class="slider-stage"><img src="static/images/sliders_demo/0_b/0/view_000.png" alt="A standing figure edited along a local spatial attribute, from small eyes to big eyes; the slider sets the intensity and the rotation slider sets the viewing angle."></div>
+        <p class="panel-name">Figure <span>&middot; local spatial</span></p>
+        <div class="slider-controls">
+          <span class="slider-end">small eyes</span>
+          <input type="range" min="0" max="8" step="1" value="0" aria-label="local spatial, small eyes to big eyes, for Figure">
+          <span class="slider-end">big eyes</span>
+        </div>
+      </div>
+      <div class="slider-demo" data-demo="32_b">
+        <div class="slider-stage"><img src="static/images/sliders_demo/32_b/0/view_000.png" alt="A tree edited along a temporal attribute, from bare to leafy; the slider sets the intensity and the rotation slider sets the viewing angle."></div>
+        <p class="panel-name">Tree <span>&middot; temporal</span></p>
+        <div class="slider-controls">
+          <span class="slider-end">bare</span>
+          <input type="range" min="0" max="8" step="1" value="0" aria-label="temporal, bare to leafy, for Tree">
+          <span class="slider-end">leafy</span>
+        </div>
+      </div>
+      <div class="slider-demo" data-demo="39_b">
+        <div class="slider-stage"><img src="static/images/sliders_demo/39_b/0/view_000.png" alt="A quadruped animal edited along a fidelity attribute, from low-poly to photorealistic; the slider sets the intensity and the rotation slider sets the viewing angle."></div>
+        <p class="panel-name">Deer <span>&middot; fidelity</span></p>
+        <div class="slider-controls">
+          <span class="slider-end">low-poly</span>
+          <input type="range" min="0" max="8" step="1" value="0" aria-label="fidelity, low-poly to photorealistic, for Animal">
+          <span class="slider-end">photorealistic</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VIDEO ================= -->
+<section id="video">
+  <div class="wrap">
+    <h2>Video</h2>
+    <div class="video-embed">
+      <iframe src="https://www.youtube-nocookie.com/embed/ngadxEGPrfw"
+              width="1280" height="720"
+              title="SemanticSlider3D: Training-Free Continuous Semantic Editing for 3D Objects"
+              loading="lazy" allowfullscreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <p class="video-alt">Trouble with the embed? <a href="https://youtu.be/ngadxEGPrfw">Watch on YouTube</a>.</p>
+  </div>
+</section>
+
+<!-- ================= METHOD ================= -->
+<section id="method" class="alt">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="lead">A user-specified attribute becomes a semantic editing direction in the latent space of
+    <a href="https://github.com/microsoft/TRELLIS">TRELLIS</a> &mdash; no per-attribute training.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Generating image conditions</h3>
+        <p>Multi-view images are rendered from the 3D object, and an LLM generates contrastive editing prompts
+        for the positive and negative extremes of the attribute. Edit-relevant views &mdash; those that actually
+        carry visual information about the attribute &mdash; are ranked by the ImageReward score between the editing
+        prompt and each camera view, verified by a VLM, then edited to produce contrastive image pairs.</p>
+      </li>
+      <li>
+        <h3>Editing via generation</h3>
+        <p>Steering directions are computed from the contrastive view pairs by averaging velocity differences
+        across them. Combined with classifier-free guidance, the scaled steering is injected into both stages of
+        the generation model to produce 3D variations at different attribute intensities. TRELLIS represents
+        objects as Structured LATents (SLAT) &mdash; local latent vectors on a sparse 3D voxel grid &mdash; and its
+        flow matching architecture makes this steering possible at inference time.</p>
+      </li>
+      <li>
+        <h3>Mapping latent variations to the slider</h3>
+        <p>Adaptive bounds are determined through quality checking, and perceptual distances are measured with
+        LPIPS. Because generation does not guarantee consistent object orientation across &alpha; values, comparing
+        key-frames by rendering order would inflate the measurement with orientation differences unrelated to the
+        actual attribute change &mdash; so a minimum-cost bipartite matching pairs each original view with its 
+        closest-matching viewpoint in the variation. Variations are then mapped to slider positions by signed perceptual 
+        distance and refined iteratively with additional anchor points.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= EVALUATION ================= -->
+<section id="evaluation">
+  <div class="wrap narrow">
+    <h2>Evaluation</h2>
+
+    <h3>Technical validation</h3>
+    <p>On a dataset of 50 3D object-attribute pairs spanning 46 unique 3D objects &mdash; covering local
+    attributes (spatial, expressions) and overall characteristics (shape, style, material, detail, temporal)
+    &mdash; our method was preferred by all five human assessors across variation range, consistency, 3D object
+    quality, and attribute disentanglement, over a baseline combining a 2D slider with an image-to-3D model.</p>
+
+    <h3>Exploratory study</h3>
+    <p>Six participants with prior 3D prototyping experience, ranging from one month to ten years, created
+    objects and sliders across two tasks. The study demonstrates that SemanticSlider3D supported decision-making
+    in 3D prototyping and was perceived as a valuable addition to existing workflows.</p>
+  </div>
+</section>
+
+<!-- ================= BIBTEX ================= -->
+<section id="bibtex" class="alt">
+  <div class="wrap narrow">
+    <h2>BibTeX</h2>
+    <div class="cite">
+      <button class="copy" type="button" data-target="#bib">Copy</button>
+<pre id="bib"><code>@article{wang2026semanticslider3d,
+    title={SemanticSlider3D: Training-Free Continuous Semantic Editing for 3D Objects},
+    author={Wang, Ru and Jain, Rahul and Niinuma, Koichiro and Gupta, Aakar},
+    journal={arXiv preprint arXiv:2608.18560},
+    year={2026}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<section id="ack">
+  <div class="wrap narrow">
+    <h2>Acknowledgments</h2>
+    <p>SemanticSlider3D builds on <a href="https://github.com/microsoft/TRELLIS">TRELLIS</a> for
+    structured-latent 3D generation. The playground additionally uses
+    <a href="https://github.com/facebookresearch/sam-3d-objects">SAM 3D Objects</a> for single-image
+    reconstruction. <!-- TODO: funding / thanks --></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap narrow">
+    <p>Page source is <a href="https://github.com/ruw001/SemanticSlider3D">on GitHub</a>. Content licensed
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; the
+    <code>sam-3d-objects</code> subtree in the code repo is covered by Meta&rsquo;s SAM License.</p>
+  </div>
+</footer>
+
+<script src="static/js/main.js?v=18"></script>
+</body>
+</html>
